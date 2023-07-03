@@ -20,4 +20,5 @@ dolly-v2-3b is a 2.8 billion parameter causal language model created by Databric
     b.  resource group, vnet, subnet
     c.  github action/ workflows for CI/CD pipeline
     d.  local azure credentials and github action variables/secret
+    e.  setup .gitignore files
     f.  install pre-commit, hooks for better efficiency.
