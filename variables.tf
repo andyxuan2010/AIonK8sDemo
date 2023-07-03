@@ -31,12 +31,6 @@ variable "environment" {
     error_message = "Only a valid azure names are expected here such as prod."
   }
 }
-
-variable "smartgpt-ec2-key" {
-  default = <<EOT
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCdrVPCmgIxr/0/GdxsrTVTQfZd8q5uZD4Ws7WgHUZEJjIal1xvK2S+996u5agUzbd5Kl2aq+BnVVhdWwblWTvejTF9NzuI5gVx3GGrWHg/kmtQ/t+rj6FWYwwo9Esg5fSYAeO2sY8CLbsoQQcwxyXAo+9HyVnxC0Nk0RcoClEpy/T/DoA4wZtnnSZ/cCAXfifT1AOv9DPR+kAtgGfXu6uTYZzg6NvvE4LFHhDJnvPVhFPXri8jfEIzDo+Hjejq+AZH1LvoBB4c1teXLg1u6sUHK1Gow6WX1PlSshmpMqSE8UCt81iPwkHtFBNo951OybYcWnBcO1aOU1yyO1DBRBR3 cdap-service
-EOT
-}
 variable "emachine-pub-key" {
   default = <<EOT
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIqfriZJbopqGHXo1gVfxo7LNF7rx+Yq1qSFpLeojDS4DWr/a8v2dpevDf95Xku/BGLZ16eRQFlW4/YFfhpPIy1sYVlaJQVOiALN8sk1R5OuGjLXy2e22SRVgH0LQehHCLwmszjuLhbmDO8qjNnzm0JIYHmv4+VkZ56LI8rTiPozHmKGxgKfhKhV1vh9NzdCnj7Nh/iQWAU82X5UzYU6J6t7Ape1bp4C74yPH3NOcVcV51qKZXiamfM2PfPnU11I+Wd7Ho8l1yvpUUZe0FdSBZtp7oWya+oPy5AXJlfuMCq5WjVUO9LCvpZMsJWQDhocMFuDRiNw4+0G/XnathEiRP root@emachine
