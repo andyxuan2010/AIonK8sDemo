@@ -11,6 +11,7 @@ variable "common_tags" {
     project              = "azure-k8s-demo"
     region               = "westeurope"
     purpose              = "demo"
+    resource_group_name  = "challenge2-rg"
   }
 }
 

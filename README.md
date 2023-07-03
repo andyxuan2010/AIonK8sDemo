@@ -12,3 +12,12 @@ dolly-v2-3b is a 2.8 billion parameter causal language model created by Databric
 2. Build all necessary components by scripts, IaC and automation
 3. Deliver to K8s/Aks Environment
 4. Deliver to production ready environment
+
+
+## Steps
+1. setup initial environment for terraform to deploy infra resource. resources like backend, vnet, resource group etc.
+    a.  backend state
+    b.  resource group, vnet, subnet
+    c.  github action/ workflows for CI/CD pipeline
+    d.  local azure credentials and github action variables/secret
+    f.  install pre-commit, hooks for better efficiency.
