@@ -16,10 +16,10 @@ dolly-v2-3b is a 2.8 billion parameter causal language model created by Databric
 
 ## Steps
 1. setup initial environment for terraform to deploy infra resource. resources like backend, vnet, resource group etc.
-    a.  backend state
-    b.  resource group, vnet, subnet
+    a.  remote backend state
+    b.  basic resource group, vnet, subnet
     c.  github action/ workflows for CI/CD pipeline
-    d.  local azure credentials and github action variables/secret
+    d.  local azure credentials and github action variables/secrets
     e.  setup .gitignore files
     f.  install pre-commit, hooks for better efficiency.
     g.  setup git remote and git push upstream
