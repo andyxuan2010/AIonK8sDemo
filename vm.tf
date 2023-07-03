@@ -56,9 +56,10 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
   size                  = "Standard_DS1_v2"
 
   os_disk {
-    name                 = "linuxvmOsDisk"
+    name                 = "linuxvmOsDisk-vm-k8s"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
+    disk_size_gb         = 10
   }
 
   source_image_reference {
@@ -68,6 +69,8 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
     version   = "latest"
   }
 
+  # delete_data_disks_on_termination = true
+  # delete_os_disk_on_termination = true
 
   computer_name                   = "vm-k8s"
   admin_username                  = "azuser"
@@ -76,9 +79,14 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
     username   = "azuser"
     public_key = azurerm_ssh_public_key.vm-pub-key.public_key
   }
+  #custom_data    = data.template_file.cloud-init.rendered
+  custom_data    = base64encode(file("scripts/userdata-ubuntu.sh"))
+
 }
 
-
+data "template_file" "cloud-init" {
+  template = file("scripts/userdata-ubuntu.sh")
+}
 
 
 
