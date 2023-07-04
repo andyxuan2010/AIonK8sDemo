@@ -25,3 +25,11 @@ dolly-v2-3b is a 2.8 billion parameter causal language model created by Databric
     g.  setup git remote and git push upstream
 
 2. setup aks cluster, acr and role
+    a. create aks cluster
+    b. create acr
+    c. create role
+    d. generate ssh keys
+    d. initialize vm with userdata-ubuntu.sh
+    f. install ssh key with 3 provisioner
+    g. install kubectl
+    h. copy k8s files
