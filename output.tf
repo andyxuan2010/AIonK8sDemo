@@ -13,10 +13,21 @@ output "hostname-k8s" {
 #   value = azurerm_kubernetes_cluster.aks.id
 # }
 
-# output "aks_fqdn" {
-#   value = azurerm_kubernetes_cluster.aks.fqdn
-# }
+output "aks_fqdn" {
+  value = azurerm_kubernetes_cluster.aks.fqdn
+}
 
-# output "aks_node_rg" {
-#   value = azurerm_kubernetes_cluster.aks.node_resource_group
-# }
+output "aks_node_rg" {
+  value = azurerm_kubernetes_cluster.aks.node_resource_group
+}
+
+output "acr_login_server" {
+  value = azurerm_container_registry.basfacr.login_server
+}
+
+resource "local_file" "kubeconfig" {
+  depends_on = [azurerm_kubernetes_cluster.aks]
+  filename   = "k8s/.kube/config"
+  content    = azurerm_kubernetes_cluster.aks.kube_config_raw
+}
+

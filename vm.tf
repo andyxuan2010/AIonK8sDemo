@@ -75,12 +75,52 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
   admin_username                  = "azuser"
   disable_password_authentication = true
   admin_ssh_key {
-    username   = "azuser"
-    public_key = azurerm_ssh_public_key.vm-pub-key.public_key
+    username = "azuser"
+    #public_key = azurerm_ssh_public_key.vm-pub-key.public_key
+    public_key = tls_private_key.global-key.public_key_openssh
   }
   #custom_data    = data.template_file.cloud-init.rendered
   custom_data = base64encode(file("scripts/userdata-ubuntu.sh"))
 
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ~/.kube/",
+      "mkdir -p /home/azuser/.kube/"
+    ]
+    connection {
+      type        = "ssh"
+      user        = "azuser"
+      private_key = tls_private_key.global-key.private_key_pem
+      host        = self.public_ip_address
+      timeout     = 10
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/k8s/.kube/config"
+    destination = "/home/azuser/.kube/config"
+    connection {
+      type        = "ssh"
+      user        = "azuser"
+      private_key = tls_private_key.global-key.private_key_pem
+      host        = self.public_ip_address
+      timeout     = 10
+    }
+  }
+  provisioner "file" {
+    source      = "${path.module}/k8s/*"
+    destination = "/home/azuser/"
+    connection {
+      type        = "ssh"
+      user        = "azuser"
+      private_key = tls_private_key.global-key.private_key_pem
+      host        = self.public_ip_address
+      timeout     = 10
+    }
+  }
+
+  depends_on = [azurerm_kubernetes_cluster.aks]
 }
 
 resource "azurerm_dns_a_record" "k8s" {
@@ -88,7 +128,7 @@ resource "azurerm_dns_a_record" "k8s" {
   zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
   resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
   ttl                 = 300
-  target_resource_id  = azurerm_public_ip.pip-k8s.id
+  records  = [ azurerm_public_ip.pip-k8s.ip_address ]
 }
 
 

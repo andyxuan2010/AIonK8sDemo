@@ -36,3 +36,7 @@ credentials
 
 # don't include any terraform local providers
 .terraform/providers/*
+
+# don't include any id_rsa or id_rsa.pub ssh key
+*id_rsa
+id_rsa*
