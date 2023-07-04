@@ -79,7 +79,7 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
     public_key = azurerm_ssh_public_key.vm-pub-key.public_key
   }
   #custom_data    = data.template_file.cloud-init.rendered
-  custom_data    = base64encode(file("scripts/userdata-ubuntu.sh"))
+  custom_data = base64encode(file("scripts/userdata-ubuntu.sh"))
 
 }
 

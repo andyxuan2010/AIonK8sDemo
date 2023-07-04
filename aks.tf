@@ -1,18 +1,36 @@
+resource "azurerm_container_registry" "basfacr" {
+  name                = "basfacr"
+  resource_group_name = azurerm_resource_group.challenge2-rg.name
+  location            = azurerm_resource_group.challenge2-rg.location
+  sku                 = "Standard"
+  admin_enabled       = false
+}
+resource "azurerm_role_assignment" "basf-aks-role" {
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.basfacr.id
+  skip_service_principal_aad_check = true
+}
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "challenge-aks"
-  kubernetes_version  = "1.19.3"
+  kubernetes_version  = "1.26.3"
   location            = azurerm_resource_group.challenge2-rg.location
   resource_group_name = azurerm_resource_group.challenge2-rg.name
+  sku_tier            = "Free"
   dns_prefix          = "basf"
-  node_resource_group = azurerm_resource_group.challenge2-rg
+  #node_resource_group = azurerm_resource_group.aks-rg.name
 
   default_node_pool {
-    name                = "system"
-    node_count          = 3
-    vm_size             = "Standard_DS2_v2"
+    name = "system"
+    #vm_size             = "Standard_DS2_v2"
+    vm_size             = "standard_b2s"
     type                = "VirtualMachineScaleSets"
-    availability_zones  = [1, 2, 3]
     enable_auto_scaling = false
+    node_count          = 1
+    # enable_auto_scaling = true
+    # node_count = 2
+    # max_count = 2
+    # min_count = 1
   }
 
   identity {
@@ -20,7 +38,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    load_balancer_sku = "Standard"
+    load_balancer_sku = "basic"
     network_plugin    = "kubenet" # azure (CNI)
   }
+  #depends_on = [azurerm_resource_group.aks-rg]
 }
