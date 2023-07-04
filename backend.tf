@@ -24,7 +24,11 @@ terraform {
 
 
 provider "azurerm" {
-  features {}
+  features {
+    virtual_machine {
+      delete_os_disk_on_deletion = true
+    }    
+  }
 }
 
 data "azurerm_client_config" "current" {}

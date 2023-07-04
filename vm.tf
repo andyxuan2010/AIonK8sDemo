@@ -59,7 +59,6 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
     name                 = "linuxvmOsDisk-vm-k8s"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    disk_size_gb         = 10
   }
 
   source_image_reference {
@@ -83,6 +82,15 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
   custom_data    = base64encode(file("scripts/userdata-ubuntu.sh"))
 
 }
+
+resource "azurerm_dns_a_record" "k8s" {
+  name                = "k8s"
+  zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
+  resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
+  ttl                 = 300
+  target_resource_id  = azurerm_public_ip.pip-k8s.id
+}
+
 
 data "template_file" "cloud-init" {
   template = file("scripts/userdata-ubuntu.sh")

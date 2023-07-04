@@ -21,3 +21,12 @@ resource "azurerm_subnet" "challenge2-subnet" {
   virtual_network_name = azurerm_virtual_network.challenge2-vnet.name
   address_prefixes     = ["10.10.1.0/24"]
 }
+
+# resource "azurerm_dns_zone" "argentiacapital" {
+#   name                = "argentiacapital.com"
+#   resource_group_name = "rg-testlab"
+# }
+data "azurerm_dns_zone" "argentiacapital-com" {
+  name                = "argentiacapital.com"
+  resource_group_name = "rg-testlab"
+}

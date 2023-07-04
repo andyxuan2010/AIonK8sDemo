@@ -16,7 +16,7 @@ apt-get -y install net-tools nmap unzip jq golang golang-go python3-pip python3-
 export PATH=$PATH:/usr/local/go/bin
 systemctl enable docker
 systemctl start docker
-usermod -aG docker ubuntu
+usermod -aG docker azuser
 
 
 apt-get -y install bash-completion
@@ -35,3 +35,10 @@ else
 fi
 
 
+#install kubectl
+
+apt-get install -y apt-transport-https
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+apt-get update
+apt-get install -y kubectl
