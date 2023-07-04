@@ -109,7 +109,7 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
     }
   }
   provisioner "file" {
-    source      = "${path.module}/k8s/*"
+    source      = "${path.module}/k8s/"
     destination = "/home/azuser/"
     connection {
       type        = "ssh"
