@@ -2,16 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dolly-api-service
-  namespace: dolly
 spec:
   type: LoadBalancer
-  LoadBalancerIP: 20.229.128.230
+  #LoadBalancerIP: 20.229.128.230
   selector:
     app: dolly-api
   ports:
     - protocol: TCP
       port: 8000
       targetPort: 80
-      #nodePort  ： 9000
+      #nodePort  ：30000
   #type: ClusterIP
   #type: NodePort

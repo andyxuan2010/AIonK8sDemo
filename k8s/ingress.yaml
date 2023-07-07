@@ -2,10 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: dolly-api-ingress
-  namespace: dolly
 spec:
   rules:
-    - host: your-domain.com
+    - host: api.argentiacapital.com
       http:
         paths:
           - pathType: Prefix
@@ -14,4 +13,4 @@ spec:
               service:
                 name: dolly-api-service
                 port:
-                  number: 80
+                  number: 8000

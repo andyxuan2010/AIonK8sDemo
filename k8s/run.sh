@@ -1,6 +1,6 @@
 #!/bin/bash
 #Build the Docker image:
-docker build -t dolly-api:v1.0 .
+docker build -t dolly-api:v1.1 .
 docker images
 
 #tag docker image before push

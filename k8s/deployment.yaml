@@ -2,9 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dolly-api
-  namespace: dolly
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: dolly-api
