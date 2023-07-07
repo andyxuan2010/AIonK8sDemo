@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dolly-api
+  namespace: dolly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dolly-api
+  template:
+    metadata:
+      labels:
+        app: dolly-api
+    spec:
+      containers:
+        - name: dolly-api
+          image: andyxuan2010/dolly-api:v1.0
+          ports:
+            - containerPort: 80
+      #   - name: nginx
+      #     image: nginx:latest
+      #     ports:
+      #       - containerPort: 8000
+      #     volumeMounts:
+      #       - name: nginx-config
+      #         mountPath: /etc/nginx/nginx.conf
+      #         subPath: nginx.conf
+      # volumes:
+      #   - name: nginx-config
+      #     configMap:
+      #       name: nginx-configmap
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: nginx-configmap
+# data:
+#   nginx.conf: |
+#     worker_processes 1;
+#     events { worker_connections 1024; }
+#     http {
+#       server {
+#         listen 80;
+#         location / {
+#           proxy_pass http://dolly-api:8000;
+#         }
+#       }
+#     }            

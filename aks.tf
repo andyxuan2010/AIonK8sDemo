@@ -26,11 +26,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vm_size             = "standard_b2s"
     type                = "VirtualMachineScaleSets"
     enable_auto_scaling = false
+    enable_node_public_ip = true
     node_count          = 1
     # enable_auto_scaling = true
     # node_count = 2
     # max_count = 2
     # min_count = 1
+    vnet_subnet_id = azurerm_subnet.challenge2-subnet.id
   }
 
   identity {
@@ -39,7 +41,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   network_profile {
     load_balancer_sku = "basic"
-    network_plugin    = "kubenet" # azure (CNI)
+    #network_plugin    = "kubenet" # azure (CNI)
+    network_plugin    = "azure"
   }
   #depends_on = [azurerm_resource_group.aks-rg]
 }

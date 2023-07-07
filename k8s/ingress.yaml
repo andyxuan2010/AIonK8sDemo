@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dolly-api-ingress
+  namespace: dolly
+spec:
+  rules:
+    - host: your-domain.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: dolly-api-service
+                port:
+                  number: 80

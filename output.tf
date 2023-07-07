@@ -4,10 +4,16 @@ output "resource_group_name" {
 output "pip-k8s" {
   value = azurerm_public_ip.pip-k8s.ip_address
 }
+
 output "hostname-k8s" {
   value = azurerm_dns_a_record.k8s.fqdn
 }
-
+output "hostname-api" {
+  value = azurerm_dns_a_record.api.fqdn
+}
+output "pip-api" {
+  value = azurerm_public_ip.pip-api.ip_address
+}
 
 # output "aks_id" {
 #   value = azurerm_kubernetes_cluster.aks.id

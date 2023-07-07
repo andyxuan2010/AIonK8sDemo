@@ -4,8 +4,15 @@ resource "azurerm_public_ip" "pip-k8s" {
   location            = azurerm_resource_group.challenge2-rg.location
   resource_group_name = azurerm_resource_group.challenge2-rg.name
   allocation_method   = "Dynamic"
-
 }
+
+resource "azurerm_public_ip" "pip-api" {
+  name                = "pip-api"
+  location            = azurerm_resource_group.challenge2-rg.location
+  resource_group_name = azurerm_resource_group.challenge2-rg.name
+  allocation_method   = "Static"
+}
+
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "nsg-k8s" {
@@ -60,6 +67,7 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
     name                 = "linuxvmOsDisk-vm-k8s"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
+    disk_size_gb = 40
   }
 
   source_image_reference {
@@ -133,6 +141,17 @@ resource "azurerm_dns_a_record" "k8s" {
   # we may have to apply twice if use pip-k8s.
   #records  = [ azurerm_public_ip.pip-k8s.ip_address ]
   records = [azurerm_linux_virtual_machine.vm-k8s.public_ip_address]
+  depends_on = [ azurerm_public_ip.pip-k8s ]
+}
+
+resource "azurerm_dns_a_record" "api" {
+  name                = "api"
+  zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
+  resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
+  ttl                 = 300
+  
+  records  = [ azurerm_public_ip.pip-api.ip_address ]
+  depends_on = [ azurerm_public_ip.pip-api ]
 }
 
 

@@ -22,9 +22,10 @@ apt-get upgrade -y
 
 apt-get -y install net-tools nmap unzip jq golang golang-go python3-pip python3-venv docker docker-compose awscli nfs-common binutils
 export PATH=$PATH:/usr/local/go/bin
+usermod -aG docker azuser
 systemctl enable docker
 systemctl start docker
-usermod -aG docker azuser
+
 
 
 apt-get -y install bash-completion
@@ -50,3 +51,9 @@ curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --de
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 apt-get update
 apt-get install -y kubectl
+#snap install -y kubectl
+
+#su -u azuser -c "cd ~/k8s/; python3 -m venv venv; pip install -r requirements.txt"
+#su -u azuser -c "docker build"
+
+#reboot

@@ -32,4 +32,6 @@ dolly-v2-3b is a 2.8 billion parameter causal language model created by Databric
     d. initialize vm with userdata-ubuntu.sh
     f. install ssh key with 3 provisioner
     g. install kubectl
-    h. copy k8s files
+    h. copy/upload k8s files
+
+3. ready for kubectl/docker/app

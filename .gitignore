@@ -40,3 +40,7 @@ credentials
 # don't include any id_rsa or id_rsa.pub ssh key
 *id_rsa
 id_rsa*
+
+# don't include any python venv
+./venv/*
+**/venv/*
