@@ -23,11 +23,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
   default_node_pool {
     name = "system"
     #vm_size             = "Standard_DS2_v2"
-    vm_size             = "standard_b2s"
-    type                = "VirtualMachineScaleSets"
-    enable_auto_scaling = false
+    vm_size               = "standard_b2s"
+    type                  = "VirtualMachineScaleSets"
+    enable_auto_scaling   = false
     enable_node_public_ip = true
-    node_count          = 1
+    node_count            = 1
     # enable_auto_scaling = true
     # node_count = 2
     # max_count = 2
@@ -42,7 +42,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   network_profile {
     load_balancer_sku = "basic"
     #network_plugin    = "kubenet" # azure (CNI)
-    network_plugin    = "azure"
+    network_plugin = "azure"
   }
   #depends_on = [azurerm_resource_group.aks-rg]
 }

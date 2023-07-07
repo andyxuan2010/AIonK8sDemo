@@ -35,3 +35,22 @@ dolly-v2-3b is a 2.8 billion parameter causal language model created by Databric
     h. copy/upload k8s files
 
 3. ready for kubectl/docker/app
+    a. Create Dockerfile
+    b. create requirements.txt and library/dependency 
+    c. build the docker image and push to dockerhub
+    d. kubectl deployment
+    e. enable loadbalancer and pip
+    d. add entry to public domain api.argentiacapital.com
+    f. access api through port 8000
+    g. verify swagger/docs
+
+4. optimization and improvement
+
+5. dockerhub images:
+
+andyxuan2010/dolly-api:v1.0  downgraded to microsoft/DialoGPT-small
+andyxuan2010/dolly-api:v1.1  regular databricks/dolly-v2-3b
+andyxuan2010/dolly-api:v1.2  tiangolo/uvicorn-gunicorn-fastapi:python3.9 
+
+6. existing issue
+

@@ -46,7 +46,7 @@ resource "azurerm_network_interface" "nic-k8s" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.pip-k8s.id
   }
-  depends_on = [ azurerm_public_ip.pip-k8s ]
+  depends_on = [azurerm_public_ip.pip-k8s]
 
 }
 
@@ -67,7 +67,7 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
     name                 = "linuxvmOsDisk-vm-k8s"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    disk_size_gb = 40
+    disk_size_gb         = 40
   }
 
   source_image_reference {
@@ -137,11 +137,11 @@ resource "azurerm_dns_a_record" "k8s" {
   zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
   resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
   ttl                 = 300
-  
+
   # we may have to apply twice if use pip-k8s.
   #records  = [ azurerm_public_ip.pip-k8s.ip_address ]
-  records = [azurerm_linux_virtual_machine.vm-k8s.public_ip_address]
-  depends_on = [ azurerm_public_ip.pip-k8s ]
+  records    = [azurerm_linux_virtual_machine.vm-k8s.public_ip_address]
+  depends_on = [azurerm_public_ip.pip-k8s]
 }
 
 resource "azurerm_dns_a_record" "api" {
@@ -149,9 +149,9 @@ resource "azurerm_dns_a_record" "api" {
   zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
   resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
   ttl                 = 300
-  
-  records  = [ azurerm_public_ip.pip-api.ip_address ]
-  depends_on = [ azurerm_public_ip.pip-api ]
+
+  records    = [azurerm_public_ip.pip-api.ip_address]
+  depends_on = [azurerm_public_ip.pip-api]
 }
 
 
