@@ -1,16 +1,16 @@
-resource "azurerm_container_registry" "basfacr" {
-  name                = "basfacr"
-  resource_group_name = azurerm_resource_group.challenge2-rg.name
-  location            = azurerm_resource_group.challenge2-rg.location
-  sku                 = "Standard"
-  admin_enabled       = false
-}
-resource "azurerm_role_assignment" "basf-aks-role" {
-  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
-  role_definition_name             = "AcrPull"
-  scope                            = azurerm_container_registry.basfacr.id
-  skip_service_principal_aad_check = true
-}
+# resource "azurerm_container_registry" "basfacr" {
+#   name                = "basfacr"
+#   resource_group_name = azurerm_resource_group.challenge2-rg.name
+#   location            = azurerm_resource_group.challenge2-rg.location
+#   sku                 = "Standard"
+#   admin_enabled       = false
+# }
+# resource "azurerm_role_assignment" "basf-aks-role" {
+#   principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+#   role_definition_name             = "AcrPull"
+#   scope                            = azurerm_container_registry.basfacr.id
+#   skip_service_principal_aad_check = true
+# }
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "challenge-aks"
   kubernetes_version  = "1.26.3"

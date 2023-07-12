@@ -44,3 +44,5 @@ id_rsa*
 # don't include any python venv
 ./venv/*
 **/venv/*
+
+**/k8s/.kube/*

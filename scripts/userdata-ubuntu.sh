@@ -20,15 +20,12 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjoftGI4Wgwc6YHGgbbUfAkMm2k4JQIkMXml
 apt-get update -y
 apt-get upgrade -y
 
-apt-get -y install net-tools nmap unzip jq golang golang-go python3-pip python3-venv docker docker-compose awscli nfs-common binutils
+apt-get -y install net-tools nmap unzip jq golang golang-go docker docker-compose nfs-common binutils bash-completion
 export PATH=$PATH:/usr/local/go/bin
 usermod -aG docker azuser
 systemctl enable docker
 systemctl start docker
 
-
-
-apt-get -y install bash-completion
 source /etc/profile.d/bash_completion.sh
 echo "export PROMPT_COMMAND='history -a'" >> /etc/bashrc
 
@@ -39,7 +36,7 @@ if [ -x "$(command -v aws)" ]; then
     echo "AWS CLI is already installed."
 else
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
+    unzip awscliv2.zip > /dev/null
     ./aws/install
 fi
 
@@ -53,7 +50,25 @@ apt-get update
 apt-get install -y kubectl
 #snap install -y kubectl
 
-#su -u azuser -c "cd ~/k8s/; python3 -m venv venv; pip install -r requirements.txt"
-#su -u azuser -c "docker build"
+echo "alias k=kubectl" >> /home/azuser/.bashrc
+echo "alias c=clear" >> /home/azuser/.bashrc
+echo "source <(kubectl completion bash)" >> /home/azuser/.bashrc
+echo "alias k=kubectl" >> /root/.bashrc
+echo "alias c=clear" >> /root/.bashrc
+echo "source <(kubectl completion bash)" >> /root/.bashrc
+source /home/azuser/.bashrc
+source /root/.bashrc
 
-#reboot
+###
+#install k8s ingress controller
+su - azuser -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml"
+##install k8s dashboard
+su - azuser -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml"
+
+
+# install helm package
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+apt-get update
+apt-get install helm

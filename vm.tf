@@ -3,7 +3,8 @@ resource "azurerm_public_ip" "pip-k8s" {
   name                = "pip-k8s"
   location            = azurerm_resource_group.challenge2-rg.location
   resource_group_name = azurerm_resource_group.challenge2-rg.name
-  allocation_method   = "Dynamic"
+  #allocation_method   = "Dynamic"
+  allocation_method   = "Static"
 }
 
 resource "azurerm_public_ip" "pip-api" {
@@ -117,6 +118,7 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
       timeout     = 10
     }
   }
+  
   provisioner "file" {
     source      = "${path.module}/k8s"
     destination = "/home/azuser"
@@ -160,7 +162,16 @@ data "template_file" "cloud-init" {
 }
 
 
+resource "azurerm_dns_a_record" "demo" {
+  name                = "demo"
+  zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
+  resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
+  ttl                 = 300
 
+  # IP would be only known after we provision the LB by k8s. so this step is done manually.
+  records    = ["20.105.194.229"]
+  depends_on = [data.azurerm_dns_zone.argentiacapital-com]
+}
 
 ################### for windows VM & bastion
 #------------------------------------------------------###################
