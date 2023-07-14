@@ -7,12 +7,12 @@ resource "azurerm_public_ip" "pip-k8s" {
   allocation_method   = "Static"
 }
 
-resource "azurerm_public_ip" "pip-api" {
-  name                = "pip-api"
-  location            = azurerm_resource_group.challenge2-rg.location
-  resource_group_name = azurerm_resource_group.challenge2-rg.name
-  allocation_method   = "Static"
-}
+# resource "azurerm_public_ip" "pip-api" {
+#   name                = "pip-api"
+#   location            = azurerm_resource_group.challenge2-rg.location
+#   resource_group_name = azurerm_resource_group.challenge2-rg.name
+#   allocation_method   = "Static"
+# }
 
 
 # Create Network Security Group and rule
@@ -62,7 +62,8 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
   location              = azurerm_resource_group.challenge2-rg.location
   resource_group_name   = azurerm_resource_group.challenge2-rg.name
   network_interface_ids = [azurerm_network_interface.nic-k8s.id]
-  size                  = "Standard_DS1_v2"
+  #size                  = "Standard_DS1_v2"
+  size                  = "Standard_B1s"
 
   os_disk {
     name                 = "linuxvmOsDisk-vm-k8s"
@@ -146,15 +147,16 @@ resource "azurerm_dns_a_record" "k8s" {
   depends_on = [azurerm_public_ip.pip-k8s]
 }
 
-resource "azurerm_dns_a_record" "api" {
+resource "azurerm_dns_cname_record" "api" {
   name                = "api"
   zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
   resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
   ttl                 = 300
 
-  records    = [azurerm_public_ip.pip-api.ip_address]
-  depends_on = [azurerm_public_ip.pip-api]
+  record    = azurerm_kubernetes_cluster.aks.fqdn
+  depends_on = [data.azurerm_dns_zone.argentiacapital-com]
 }
+
 
 
 data "template_file" "cloud-init" {
@@ -169,9 +171,32 @@ resource "azurerm_dns_a_record" "demo" {
   ttl                 = 300
 
   # IP would be only known after we provision the LB by k8s. so this step is done manually.
-  records    = ["20.105.194.229"]
+  records    = ["51.105.198.29"]
   depends_on = [data.azurerm_dns_zone.argentiacapital-com]
 }
+
+resource "azurerm_dns_a_record" "n1" {
+  name                = "n1"
+  zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
+  resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
+  ttl                 = 300
+
+  # IP would be only known after we provision the LB by k8s. so this step is done manually.
+  records    = ["20.160.159.195"]
+  depends_on = [data.azurerm_dns_zone.argentiacapital-com]
+}
+
+resource "azurerm_dns_a_record" "ep" {
+  name                = "ep"
+  zone_name           = data.azurerm_dns_zone.argentiacapital-com.name
+  resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
+  ttl                 = 300
+
+  # IP would be only known after we provision the LB by k8s. so this step is done manually.
+  records    = ["51.138.38.245"]
+  depends_on = [data.azurerm_dns_zone.argentiacapital-com]
+}
+
 
 ################### for windows VM & bastion
 #------------------------------------------------------###################

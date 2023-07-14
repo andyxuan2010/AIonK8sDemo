@@ -4,13 +4,13 @@ metadata:
   name: nginx-ingress
 spec:
   rules:
-    - host: dolly-api.com
-      http:
-        paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: nginx-service
-                port:
-                  number: 80
+    #- host: demo.argentiacapital.com
+  - http:
+      paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: nginx-service
+              port:
+                number: 80

@@ -3,6 +3,9 @@ set -x
 
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 
+#add argentiacapital.com domain suffix to the vm
+echo "search argentiacapital.com" >> /etc/resolv.conf
+
 #add additional keepalive seconds to sshd
 echo "ClientAliveInterval 1200" >> /etc/ssh/sshd_config
 echo "ClientAliveCountMax  3" >> /etc/ssh/sshd_config
@@ -72,3 +75,9 @@ apt-get install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 apt-get update
 apt-get install helm
+
+# deploy demo nginx server to k8s
+su - azuser -c "cd k8s; kubectl apply -f nginx-deployment.yaml -f nginx-service.yaml -f nginx-ingress.yaml" 
+
+#add argentiacapital.com domain suffix to the vm
+echo "search argentiacapital.com" >> /etc/resolv.conf

@@ -3,8 +3,9 @@ kind: Ingress
 metadata:
   name: dolly-api-ingress
 spec:
+  ingressClassName: nginx
   rules:
-    - host: api.argentiacapital.com
+    - host: basf.argentiacapital.com
       http:
         paths:
           - pathType: Prefix

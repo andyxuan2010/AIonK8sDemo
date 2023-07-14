@@ -23,6 +23,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   default_node_pool {
     name = "system"
     #vm_size             = "Standard_DS2_v2"
+    #b2s<>44$,d2s_v2<>127$
     vm_size               = "standard_b2s"
     type                  = "VirtualMachineScaleSets"
     enable_auto_scaling   = false
@@ -40,15 +41,21 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    load_balancer_sku = "basic"
-    #network_plugin    = "kubenet" # azure (CNI)
-    network_plugin = "azure"
+    #load_balancer_sku = "basic"
+    load_balancer_sku = "standard"
+    network_plugin    = "kubenet" # azure (CNI)
+    #network_plugin = "azure"
   }
   #depends_on = [azurerm_resource_group.aks-rg]
 }
+resource "local_file" "kubeconfig" {
+  depends_on = [azurerm_kubernetes_cluster.aks]
+  filename   = "k8s/.kube/config"
+  content    = azurerm_kubernetes_cluster.aks.kube_config_raw
+}
 
-# resource "local_file" "kubeconfig" {
-#   depends_on = [azurerm_kubernetes_cluster.aks]
-#   filename = "kubeconfig"
-#   content = azurerm_kubernetes_cluster.aks.kube_config_raw
-# }
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = azurerm_kubernetes_cluster.aks.name
+  resource_group_name = azurerm_resource_group.challenge2-rg.name
+}
+
