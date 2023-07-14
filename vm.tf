@@ -4,7 +4,7 @@ resource "azurerm_public_ip" "pip-k8s" {
   location            = azurerm_resource_group.challenge2-rg.location
   resource_group_name = azurerm_resource_group.challenge2-rg.name
   #allocation_method   = "Dynamic"
-  allocation_method   = "Static"
+  allocation_method = "Static"
 }
 
 # resource "azurerm_public_ip" "pip-api" {
@@ -63,7 +63,7 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
   resource_group_name   = azurerm_resource_group.challenge2-rg.name
   network_interface_ids = [azurerm_network_interface.nic-k8s.id]
   #size                  = "Standard_DS1_v2"
-  size                  = "Standard_B1s"
+  size = "Standard_B1s"
 
   os_disk {
     name                 = "linuxvmOsDisk-vm-k8s"
@@ -119,7 +119,7 @@ resource "azurerm_linux_virtual_machine" "vm-k8s" {
       timeout     = 10
     }
   }
-  
+
   provisioner "file" {
     source      = "${path.module}/k8s"
     destination = "/home/azuser"
@@ -153,7 +153,7 @@ resource "azurerm_dns_cname_record" "api" {
   resource_group_name = data.azurerm_dns_zone.argentiacapital-com.resource_group_name
   ttl                 = 300
 
-  record    = azurerm_kubernetes_cluster.aks.fqdn
+  record     = azurerm_kubernetes_cluster.aks.fqdn
   depends_on = [data.azurerm_dns_zone.argentiacapital-com]
 }
 
