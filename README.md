@@ -45,6 +45,10 @@ dolly-v2-3b is a 2.8 billion parameter causal language model created by Databric
     g. verify swagger/docs
 
 4. optimization and improvement
+    a. build nginx ingress controller
+    b. add k8s dashboard
+    c. setup the ingress rules
+    d. ...
 
 5. dockerhub images:
 
